@@ -35,6 +35,8 @@
             // 
             // textBoxAbout_VAN
             // 
+            textBoxAbout_VAN.BackColor = Color.Linen;
+            textBoxAbout_VAN.Enabled = false;
             textBoxAbout_VAN.Location = new Point(80, 32);
             textBoxAbout_VAN.Multiline = true;
             textBoxAbout_VAN.Name = "textBoxAbout_VAN";
@@ -42,28 +44,32 @@
             textBoxAbout_VAN.Size = new Size(637, 331);
             textBoxAbout_VAN.TabIndex = 0;
             textBoxAbout_VAN.Text = resources.GetString("textBoxAbout_VAN.Text");
-            textBoxAbout_VAN.TextChanged += this.textBoxAbout_VAN_TextChanged;
             // 
             // buttonOK_VAN
             // 
+            buttonOK_VAN.BackColor = Color.Linen;
             buttonOK_VAN.Location = new Point(612, 392);
             buttonOK_VAN.Name = "buttonOK_VAN";
             buttonOK_VAN.Size = new Size(150, 46);
             buttonOK_VAN.TabIndex = 1;
             buttonOK_VAN.Text = "ОК";
-            buttonOK_VAN.UseVisualStyleBackColor = true;
+            buttonOK_VAN.UseVisualStyleBackColor = false;
             buttonOK_VAN.Click += buttonOK_VAN_Click;
             // 
             // FormAbout
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.PeachPuff;
             ClientSize = new Size(800, 450);
             Controls.Add(buttonOK_VAN);
             Controls.Add(textBoxAbout_VAN);
+            ForeColor = SystemColors.InfoText;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
+            MaximumSize = new Size(826, 521);
             MinimizeBox = false;
+            MinimumSize = new Size(826, 521);
             Name = "FormAbout";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "О программе";
