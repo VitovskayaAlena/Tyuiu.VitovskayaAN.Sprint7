@@ -46,7 +46,7 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
         {
             try
             {
-                string FilePath = @"C:\DataSprint7\InPutFileProjectV7.csv"; // Изменил на правильный путь
+                string FilePath = @"C:\DataSprint7\InPutFileProjectV7.csv";
 
                 if (!File.Exists(FilePath))
                 {
@@ -69,52 +69,38 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
                 dataGridViewMatrix_VAN.Columns.Clear();
                 dataGridViewMatrix_VAN.Rows.Clear();
 
-                dataGridViewMatrix_VAN.ColumnCount = columns;
+                // Устанавливаем 6 колонок (без задолженности)
+                dataGridViewMatrix_VAN.ColumnCount = 6;
 
                 // Настраиваем колонки
-                if (columns > 0)
-                {
-                    dataGridViewMatrix_VAN.Columns[0].HeaderText = "Номер подъезда";
-                    dataGridViewMatrix_VAN.Columns[0].Width = 75;
-                }
-                if (columns > 1)
-                {
-                    dataGridViewMatrix_VAN.Columns[1].HeaderText = "Номер квартиры";
-                    dataGridViewMatrix_VAN.Columns[1].Width = 75;
-                }
-                if (columns > 2)
-                {
-                    dataGridViewMatrix_VAN.Columns[2].HeaderText = "Кол-во комнат";
-                    dataGridViewMatrix_VAN.Columns[2].Width = 75;
-                }
-                if (columns > 3)
-                {
-                    dataGridViewMatrix_VAN.Columns[3].HeaderText = "Фамилия квартиросъёмщика";
-                    dataGridViewMatrix_VAN.Columns[3].Width = 125;
-                }
-                if (columns > 4)
-                {
-                    dataGridViewMatrix_VAN.Columns[4].HeaderText = "Кол-во членов семьи";
-                    dataGridViewMatrix_VAN.Columns[4].Width = 100;
-                }
-                if (columns > 5)
-                {
-                    dataGridViewMatrix_VAN.Columns[5].HeaderText = "Кол-во детей в семье";
-                    dataGridViewMatrix_VAN.Columns[5].Width = 100;
-                }
-                if (columns > 6)
-                {
-                    dataGridViewMatrix_VAN.Columns[6].HeaderText = "Есть ли задолженность по квартплате";
-                    dataGridViewMatrix_VAN.Columns[6].Width = 165;
-                }
+                dataGridViewMatrix_VAN.Columns[0].HeaderText = "Номер подъезда";
+                dataGridViewMatrix_VAN.Columns[0].Width = 75;
 
-                // Заполняем таблицу
+                dataGridViewMatrix_VAN.Columns[1].HeaderText = "Номер квартиры";
+                dataGridViewMatrix_VAN.Columns[1].Width = 75;
+
+                dataGridViewMatrix_VAN.Columns[2].HeaderText = "Кол-во комнат";
+                dataGridViewMatrix_VAN.Columns[2].Width = 75;
+
+                dataGridViewMatrix_VAN.Columns[3].HeaderText = "Фамилия квартиросъёмщика";
+                dataGridViewMatrix_VAN.Columns[3].Width = 125;
+
+                dataGridViewMatrix_VAN.Columns[4].HeaderText = "Количество членов семьи";
+                dataGridViewMatrix_VAN.Columns[4].Width = 100;
+
+                dataGridViewMatrix_VAN.Columns[5].HeaderText = "Количество детей в семье";
+                dataGridViewMatrix_VAN.Columns[5].Width = 100;
+
+                // Заполняем таблицу (только первые 6 колонок)
                 for (int r = 0; r < rows; r++)
                 {
                     int rowIndex = dataGridViewMatrix_VAN.Rows.Add();
-                    for (int c = 0; c < columns; c++)
+                    for (int c = 0; c < 6; c++) // Только 6 колонок
                     {
-                        dataGridViewMatrix_VAN.Rows[rowIndex].Cells[c].Value = arrayValues[r, c];
+                        if (c < columns)
+                        {
+                            dataGridViewMatrix_VAN.Rows[rowIndex].Cells[c].Value = arrayValues[r, c];
+                        }
                     }
                 }
 
@@ -127,21 +113,33 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
 
                 int sumAll = 0;
                 int sumKids = 0;
-                int countPeople = 0;
                 int apartmentCount = 0;
+                int minMembers = int.MaxValue;
+                int maxMembers = int.MinValue;
 
-                // Считаем общее количество людей и детей
-                for (int i = 0; i < dataGridViewMatrix_VAN.Rows.Count - 1; i++) // -1 чтобы исключить пустую строку
+                // Считаем статистику
+                for (int i = 0; i < dataGridViewMatrix_VAN.Rows.Count - 1; i++)
                 {
+                    // Количество квартир
+                    if (dataGridViewMatrix_VAN.Rows[i].Cells[1].Value != null)
+                    {
+                        apartmentCount++;
+                    }
+
+                    // Члены семьи
                     if (dataGridViewMatrix_VAN.Rows[i].Cells[4].Value != null)
                     {
                         if (int.TryParse(dataGridViewMatrix_VAN.Rows[i].Cells[4].Value.ToString(), out int members))
                         {
                             sumAll += members;
-                            countPeople++;
+
+                            // Находим минимум и максимум
+                            if (members < minMembers) minMembers = members;
+                            if (members > maxMembers) maxMembers = members;
                         }
                     }
 
+                    // Дети
                     if (dataGridViewMatrix_VAN.Rows[i].Cells[5].Value != null)
                     {
                         if (int.TryParse(dataGridViewMatrix_VAN.Rows[i].Cells[5].Value.ToString(), out int kids))
@@ -149,45 +147,23 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
                             sumKids += kids;
                         }
                     }
-                    if (dataGridViewMatrix_VAN.Rows[i].Cells[1].Value != null &&!string.IsNullOrWhiteSpace(dataGridViewMatrix_VAN.Rows[i].Cells[1].Value.ToString()))
-                    {
-                        apartmentCount++;
-                    }
-
-
-                }
-
-                // Находим минимум и максимум членов семьи
-                int[] familySizes = new int[countPeople];
-                int index = 0;
-
-                for (int i = 0; i < dataGridViewMatrix_VAN.Rows.Count - 1 && index < countPeople; i++)
-                {
-                    if (dataGridViewMatrix_VAN.Rows[i].Cells[4].Value != null)
-                    {
-                        if (int.TryParse(dataGridViewMatrix_VAN.Rows[i].Cells[4].Value.ToString(), out int size))
-                        {
-                            familySizes[index] = size;
-                            index++;
-                        }
-                    }
                 }
 
                 // Заполняем текстовые поля
+                textBoxCountK_VAN.Text = apartmentCount.ToString();
                 textBoxCountCh_VAN.Text = sumAll.ToString();
                 textBoxCountD_VAN.Text = sumKids.ToString();
-                textBoxCountK_VAN.Text = apartmentCount.ToString();
 
-                if (familySizes.Length > 0)
-                {
-                    textBoxMax_VAN.Text = familySizes.Max().ToString();
-                    textBoxMin_VAN.Text = familySizes.Min().ToString();
-                }
+                // Минимум и максимум
+                if (minMembers != int.MaxValue)
+                    textBoxMin_VAN.Text = minMembers.ToString();
                 else
-                {
-                    textBoxMax_VAN.Text = "0";
                     textBoxMin_VAN.Text = "0";
-                }
+
+                if (maxMembers != int.MinValue)
+                    textBoxMax_VAN.Text = maxMembers.ToString();
+                else
+                    textBoxMax_VAN.Text = "0";
             }
             catch (Exception ex)
             {
@@ -256,7 +232,7 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
             }
             else
             {
-                MessageBox.Show("Введите число от 0 до 6");
+                MessageBox.Show("Введите число от 0 до 5");
             }
         }
     }

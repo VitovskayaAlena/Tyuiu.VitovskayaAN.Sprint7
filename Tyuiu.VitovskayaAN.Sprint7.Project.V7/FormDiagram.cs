@@ -41,7 +41,19 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
                 dataGridViewMatrix_VAN.Rows.Add(parts);
             }
 
-            MessageBox.Show($"Загружено {lines.Length} записей");
+            dataGridViewMatrix_VAN.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+
+            int totalWidth = dataGridViewMatrix_VAN.ClientSize.Width;
+
+            // Процентное соотношение
+            dataGridViewMatrix_VAN.Columns[0].Width = (int)(totalWidth * 0.15); // 15%
+            dataGridViewMatrix_VAN.Columns[1].Width = (int)(totalWidth * 0.15); // 15%
+            dataGridViewMatrix_VAN.Columns[2].Width = (int)(totalWidth * 0.15); // 15%
+            dataGridViewMatrix_VAN.Columns[3].Width = (int)(totalWidth * 0.25); // 25%
+            dataGridViewMatrix_VAN.Columns[4].Width = (int)(totalWidth * 0.15); // 15%
+            dataGridViewMatrix_VAN.Columns[5].Width = (int)(totalWidth * 0.15); // 15%
+
+
         }
 
         // Диаграмма "Комнаты"

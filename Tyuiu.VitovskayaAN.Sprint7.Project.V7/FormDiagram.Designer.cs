@@ -57,17 +57,16 @@
             // panelLeft_VAN
             // 
             panelLeft_VAN.Controls.Add(dataGridViewMatrix_VAN);
-            panelLeft_VAN.Dock = DockStyle.Fill;
+            panelLeft_VAN.Dock = DockStyle.Left;
             panelLeft_VAN.Location = new Point(0, 0);
             panelLeft_VAN.Name = "panelLeft_VAN";
-            panelLeft_VAN.Size = new Size(1866, 919);
+            panelLeft_VAN.Size = new Size(676, 919);
             panelLeft_VAN.TabIndex = 0;
             // 
             // dataGridViewMatrix_VAN
             // 
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dataGridViewMatrix_VAN.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridViewMatrix_VAN.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewMatrix_VAN.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewMatrix_VAN.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridViewMatrix_VAN.BackgroundColor = Color.Linen;
@@ -87,22 +86,23 @@
             dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
             dataGridViewMatrix_VAN.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewMatrix_VAN.Dock = DockStyle.Left;
             dataGridViewMatrix_VAN.Location = new Point(0, 0);
             dataGridViewMatrix_VAN.Name = "dataGridViewMatrix_VAN";
             dataGridViewMatrix_VAN.RowHeadersVisible = false;
             dataGridViewMatrix_VAN.RowHeadersWidth = 82;
             dataGridViewMatrix_VAN.ScrollBars = ScrollBars.Vertical;
-            dataGridViewMatrix_VAN.Size = new Size(1866, 919);
+            dataGridViewMatrix_VAN.Size = new Size(676, 919);
             dataGridViewMatrix_VAN.TabIndex = 0;
             // 
             // panelRight_VAN
             // 
             panelRight_VAN.Controls.Add(chartDiag_VAN);
             panelRight_VAN.Controls.Add(groupBoxDiag_VAN);
-            panelRight_VAN.Dock = DockStyle.Right;
-            panelRight_VAN.Location = new Point(664, 0);
+            panelRight_VAN.Dock = DockStyle.Fill;
+            panelRight_VAN.Location = new Point(676, 0);
             panelRight_VAN.Name = "panelRight_VAN";
-            panelRight_VAN.Size = new Size(1202, 919);
+            panelRight_VAN.Size = new Size(1190, 919);
             panelRight_VAN.TabIndex = 1;
             // 
             // chartDiag_VAN
@@ -121,7 +121,7 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             chartDiag_VAN.Series.Add(series1);
-            chartDiag_VAN.Size = new Size(1202, 603);
+            chartDiag_VAN.Size = new Size(1190, 603);
             chartDiag_VAN.TabIndex = 1;
             // 
             // groupBoxDiag_VAN
@@ -136,7 +136,7 @@
             groupBoxDiag_VAN.Dock = DockStyle.Bottom;
             groupBoxDiag_VAN.Location = new Point(0, 603);
             groupBoxDiag_VAN.Name = "groupBoxDiag_VAN";
-            groupBoxDiag_VAN.Size = new Size(1202, 316);
+            groupBoxDiag_VAN.Size = new Size(1190, 316);
             groupBoxDiag_VAN.TabIndex = 0;
             groupBoxDiag_VAN.TabStop = false;
             groupBoxDiag_VAN.Text = "Выбор диаграммы:";
