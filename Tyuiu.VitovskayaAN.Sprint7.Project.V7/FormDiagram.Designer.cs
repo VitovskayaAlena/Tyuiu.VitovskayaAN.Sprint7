@@ -116,7 +116,6 @@
             chartDiag_VAN.Legends.Add(legend1);
             chartDiag_VAN.Location = new Point(0, 0);
             chartDiag_VAN.Name = "chartDiag_VAN";
-            chartDiag_VAN.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Chocolate;
             series1.ChartArea = "ChartArea_VAN";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
             series1.Legend = "Legend1";
