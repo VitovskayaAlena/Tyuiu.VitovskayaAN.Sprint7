@@ -1,10 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Windows.Forms;
+﻿using System.ComponentModel;
 using Tyuiu.VitovskayaAN.Sprint7.Project.V7.Lib;
-
 namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
 {
     public partial class FormStatistics : Form
@@ -69,7 +64,7 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
                 dataGridViewMatrix_VAN.Columns.Clear();
                 dataGridViewMatrix_VAN.Rows.Clear();
 
-                // Устанавливаем 6 колонок (без задолженности)
+                // Устанавливаем 6 колонок 
                 dataGridViewMatrix_VAN.ColumnCount = 6;
 
                 // Настраиваем колонки
@@ -91,11 +86,11 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
                 dataGridViewMatrix_VAN.Columns[5].HeaderText = "Количество детей в семье";
                 dataGridViewMatrix_VAN.Columns[5].Width = 100;
 
-                // Заполняем таблицу (только первые 6 колонок)
+                // Заполняем таблицу
                 for (int r = 0; r < rows; r++)
                 {
                     int rowIndex = dataGridViewMatrix_VAN.Rows.Add();
-                    for (int c = 0; c < 6; c++) // Только 6 колонок
+                    for (int c = 0; c < 6; c++)
                     {
                         if (c < columns)
                         {

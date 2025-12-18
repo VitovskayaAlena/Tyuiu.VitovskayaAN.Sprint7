@@ -1,7 +1,5 @@
 using System.ComponentModel;
-using System.IO;
 using System.Text;
-
 namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
 {
     public partial class FormMain : Form

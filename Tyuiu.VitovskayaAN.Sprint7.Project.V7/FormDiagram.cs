@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
+﻿using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
 {
@@ -105,11 +102,6 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
             {
                 series.Points.AddXY(item.Key.ToString(), item.Value);
             }
-        }
-
-        private void splitter1_SplitterMoved(object sender, SplitterEventArgs e)
-        {
-
         }
     }
 }
