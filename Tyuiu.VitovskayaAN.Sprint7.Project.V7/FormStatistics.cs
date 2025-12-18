@@ -1,5 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.IO;
+using System.Windows.Forms;
 using Tyuiu.VitovskayaAN.Sprint7.Project.V7.Lib;
+
 namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
 {
     public partial class FormStatistics : Form
@@ -8,8 +12,66 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
         {
             InitializeComponent();
         }
-        DataService ds = new DataService();
 
+        private void FormStatistics_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                string FilePath = @"C:\DataSprint7\InPutFileProjectV7.csv";
+                DataService ds = new DataService(); // Создаем объект библиотеки
+
+                // Загружаем данные в таблицу 
+                string[,] arrayValues = LoadFromFileData(FilePath);
+                int rows = arrayValues.GetLength(0);
+                int columns = arrayValues.GetLength(1);
+
+                // Очищаем таблицу
+                dataGridViewMatrix_VAN.Columns.Clear();
+                dataGridViewMatrix_VAN.Rows.Clear();
+
+                // Создаем 6 колонок
+                dataGridViewMatrix_VAN.ColumnCount = 6;
+                dataGridViewMatrix_VAN.Columns[0].HeaderText = "Номер подъезда";
+                dataGridViewMatrix_VAN.Columns[0].Width = 75;
+                dataGridViewMatrix_VAN.Columns[1].HeaderText = "Номер квартиры";
+                dataGridViewMatrix_VAN.Columns[1].Width = 75;
+                dataGridViewMatrix_VAN.Columns[2].HeaderText = "Кол-во комнат";
+                dataGridViewMatrix_VAN.Columns[2].Width = 75;
+                dataGridViewMatrix_VAN.Columns[3].HeaderText = "Фамилия квартиросъёмщика";
+                dataGridViewMatrix_VAN.Columns[3].Width = 125;
+                dataGridViewMatrix_VAN.Columns[4].HeaderText = "Количество членов семьи";
+                dataGridViewMatrix_VAN.Columns[4].Width = 100;
+                dataGridViewMatrix_VAN.Columns[5].HeaderText = "Количество детей в семье";
+                dataGridViewMatrix_VAN.Columns[5].Width = 100;
+
+                // Заполняем таблицу
+                for (int r = 0; r < rows; r++)
+                {
+                    int rowIndex = dataGridViewMatrix_VAN.Rows.Add();
+                    for (int c = 0; c < 6; c++)
+                    {
+                        if (c < columns)
+                        {
+                            dataGridViewMatrix_VAN.Rows[rowIndex].Cells[c].Value = arrayValues[r, c];
+                        }
+                    }
+                }
+
+                // ВЫЧИСЛЕНИЯ ЧЕРЕЗ БИБЛИОТЕКУ
+                textBoxCountK_VAN.Text = ds.CountApartments(FilePath).ToString();
+                textBoxCountCh_VAN.Text = ds.SumFamilyMembers(FilePath).ToString();
+                textBoxCountD_VAN.Text = ds.SumChildren(FilePath).ToString();
+                textBoxMin_VAN.Text = ds.MinFamilyMembers(FilePath).ToString();
+                textBoxMax_VAN.Text = ds.MaxFamilyMembers(FilePath).ToString();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка: {ex.Message}");
+            }
+        }
+
+        // Метод загрузки данных из файла
         public static string[,] LoadFromFileData(string filePath)
         {
             if (!File.Exists(filePath))
@@ -35,135 +97,6 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
                 }
             }
             return arrayValues;
-        }
-
-        private void FormStatistics_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                string FilePath = @"C:\DataSprint7\InPutFileProjectV7.csv";
-
-                if (!File.Exists(FilePath))
-                {
-                    MessageBox.Show($"Файл не найден: {FilePath}");
-                    return;
-                }
-
-                // Загружаем данные
-                string[,] arrayValues = LoadFromFileData(FilePath);
-                int rows = arrayValues.GetLength(0);
-                int columns = arrayValues.GetLength(1);
-
-                if (rows == 0)
-                {
-                    MessageBox.Show("Файл пустой");
-                    return;
-                }
-
-                // Очищаем таблицу
-                dataGridViewMatrix_VAN.Columns.Clear();
-                dataGridViewMatrix_VAN.Rows.Clear();
-
-                // Устанавливаем 6 колонок 
-                dataGridViewMatrix_VAN.ColumnCount = 6;
-
-                // Настраиваем колонки
-                dataGridViewMatrix_VAN.Columns[0].HeaderText = "Номер подъезда";
-                dataGridViewMatrix_VAN.Columns[0].Width = 75;
-
-                dataGridViewMatrix_VAN.Columns[1].HeaderText = "Номер квартиры";
-                dataGridViewMatrix_VAN.Columns[1].Width = 75;
-
-                dataGridViewMatrix_VAN.Columns[2].HeaderText = "Кол-во комнат";
-                dataGridViewMatrix_VAN.Columns[2].Width = 75;
-
-                dataGridViewMatrix_VAN.Columns[3].HeaderText = "Фамилия квартиросъёмщика";
-                dataGridViewMatrix_VAN.Columns[3].Width = 125;
-
-                dataGridViewMatrix_VAN.Columns[4].HeaderText = "Количество членов семьи";
-                dataGridViewMatrix_VAN.Columns[4].Width = 100;
-
-                dataGridViewMatrix_VAN.Columns[5].HeaderText = "Количество детей в семье";
-                dataGridViewMatrix_VAN.Columns[5].Width = 100;
-
-                // Заполняем таблицу
-                for (int r = 0; r < rows; r++)
-                {
-                    int rowIndex = dataGridViewMatrix_VAN.Rows.Add();
-                    for (int c = 0; c < 6; c++)
-                    {
-                        if (c < columns)
-                        {
-                            dataGridViewMatrix_VAN.Rows[rowIndex].Cells[c].Value = arrayValues[r, c];
-                        }
-                    }
-                }
-
-                // Статистика
-                if (dataGridViewMatrix_VAN.Rows.Count == 0)
-                {
-                    MessageBox.Show("Нет данных для статистики");
-                    return;
-                }
-
-                int sumAll = 0;
-                int sumKids = 0;
-                int apartmentCount = 0;
-                int minMembers = int.MaxValue;
-                int maxMembers = int.MinValue;
-
-                // Считаем статистику
-                for (int i = 0; i < dataGridViewMatrix_VAN.Rows.Count - 1; i++)
-                {
-                    // Количество квартир
-                    if (dataGridViewMatrix_VAN.Rows[i].Cells[1].Value != null)
-                    {
-                        apartmentCount++;
-                    }
-
-                    // Члены семьи
-                    if (dataGridViewMatrix_VAN.Rows[i].Cells[4].Value != null)
-                    {
-                        if (int.TryParse(dataGridViewMatrix_VAN.Rows[i].Cells[4].Value.ToString(), out int members))
-                        {
-                            sumAll += members;
-
-                            // Находим минимум и максимум
-                            if (members < minMembers) minMembers = members;
-                            if (members > maxMembers) maxMembers = members;
-                        }
-                    }
-
-                    // Дети
-                    if (dataGridViewMatrix_VAN.Rows[i].Cells[5].Value != null)
-                    {
-                        if (int.TryParse(dataGridViewMatrix_VAN.Rows[i].Cells[5].Value.ToString(), out int kids))
-                        {
-                            sumKids += kids;
-                        }
-                    }
-                }
-
-                // Заполняем текстовые поля
-                textBoxCountK_VAN.Text = apartmentCount.ToString();
-                textBoxCountCh_VAN.Text = sumAll.ToString();
-                textBoxCountD_VAN.Text = sumKids.ToString();
-
-                // Минимум и максимум
-                if (minMembers != int.MaxValue)
-                    textBoxMin_VAN.Text = minMembers.ToString();
-                else
-                    textBoxMin_VAN.Text = "0";
-
-                if (maxMembers != int.MinValue)
-                    textBoxMax_VAN.Text = maxMembers.ToString();
-                else
-                    textBoxMax_VAN.Text = "0";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка: {ex.Message}");
-            }
         }
 
         private void buttonPoisk_VAN_Click(object sender, EventArgs e)

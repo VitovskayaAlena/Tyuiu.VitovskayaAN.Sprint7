@@ -11,7 +11,6 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
             InitializeComponent();
         }
 
-
         private void FormMain_Load(object sender, EventArgs e)
         {
             // Создаем колонки таблицы
