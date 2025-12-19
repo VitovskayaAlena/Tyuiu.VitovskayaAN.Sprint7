@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Text;
+
 namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
 {
     public partial class FormMain : Form
@@ -9,21 +10,16 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
         public FormMain()
         {
             InitializeComponent();
+            CreateDataGridViewColumns(); // создаем колонки сразу
         }
 
-        private void FormMain_Load(object sender, EventArgs e)
-        {
-            // Создаем колонки таблицы
-            CreateDataGridViewColumns();
-        }
-
-        // Метод для создания колонок DataGridView
+        // метод для создания колонок DataGridView
         private void CreateDataGridViewColumns()
         {
-            // Очищаем существующие колонки (если есть)
+            // очищаем существующие колонки (если есть)
             dataGridViewMatrix_VAN.Columns.Clear();
 
-            // Создаем колонки
+            // создаем колонки
             dataGridViewMatrix_VAN.Columns.Add("Column1", "Подъезд");
             dataGridViewMatrix_VAN.Columns.Add("Column2", "Квартира");
             dataGridViewMatrix_VAN.Columns.Add("Column3", "Комнаты");
@@ -32,7 +28,7 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
             dataGridViewMatrix_VAN.Columns.Add("Column6", "Дети");
         }
 
-        // Кнопка загрузки файла
+        // кнопка загрузки файла
         private void buttonLoad_Click(object sender, EventArgs e)
         {
             try
@@ -42,19 +38,19 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
                 {
                     filePath = openFileDialog_VAN.FileName;
 
-                    // Убедимся, что колонки созданы
+                    // убедимся что колонки созданы
                     if (dataGridViewMatrix_VAN.Columns.Count == 0)
                     {
                         CreateDataGridViewColumns();
                     }
 
-                    // Читаем файл
+                    // читаем файл
                     string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
 
-                    // Очищаем таблицу
+                    // очищаем таблицу
                     dataGridViewMatrix_VAN.Rows.Clear();
 
-                    // Добавляем строки из файла
+                    // добавляем строки из файла
                     foreach (string line in lines)
                     {
                         if (line.Trim() != "")
@@ -76,16 +72,16 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
             }
         }
 
-        // Кнопка добавления записи
+        // кнопка добавления записи
         private void buttonAdd_VAN_Click(object sender, EventArgs e)
         {
-            // Убедимся, что колонки созданы
+            // убедимся что колонки созданы
             if (dataGridViewMatrix_VAN.Columns.Count == 0)
             {
                 CreateDataGridViewColumns();
             }
 
-            // Проверяем, что все поля заполнены
+            // проверяем что все поля заполнены
             if (textBoxNumberP_VAN.Text == "" ||
                 textBoxNumberK_VAN.Text == "" ||
                 textBoxCountK_VAN.Text == "" ||
@@ -97,7 +93,7 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
                 return;
             }
 
-            // Добавляем новую строку
+            // добавляем новую строку
             dataGridViewMatrix_VAN.Rows.Add(
                 textBoxNumberP_VAN.Text,
                 textBoxNumberK_VAN.Text,
@@ -107,7 +103,7 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
                 textBoxCountD_VAN.Text
             );
 
-            // Очищаем поля ввода
+            // очищаем поля ввода
             textBoxNumberP_VAN.Text = "";
             textBoxNumberK_VAN.Text = "";
             textBoxCountK_VAN.Text = "";
@@ -117,12 +113,13 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
 
             MessageBox.Show("Добавлено!");
         }
-        // Кнопка сортировки
+
+        // кнопка сортировки
         private void buttonSort_VAN_Click(object sender, EventArgs e)
         {
             try
             {
-                // Проверяем, есть ли колонки
+                // проверяем есть ли колонки
                 if (dataGridViewMatrix_VAN.Columns.Count == 0)
                 {
                     MessageBox.Show("Сначала создайте колонки таблицы!");
@@ -146,20 +143,19 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
             }
         }
 
-
-        // Кнопка сохранения
+        // кнопка сохранения
         private void buttonSave_Click(object sender, EventArgs e)
         {
             try
             {
-                // Проверяем, есть ли данные для сохранения
+                //проверяем есть ли данные для сохранения
                 if (dataGridViewMatrix_VAN.Rows.Count == 0)
                 {
                     MessageBox.Show("Нет данных для сохранения!");
                     return;
                 }
 
-                // Сохраняем данные в файл
+                // сохраняем данные в файл
                 using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
                 {
                     for (int i = 0; i < dataGridViewMatrix_VAN.Rows.Count - 1; i++)
@@ -182,33 +178,29 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
             }
         }
 
-        // Кнопка диаграммы
+        // кнопка диаграммы
         private void buttonDiag_VAN_Click(object sender, EventArgs e)
         {
             new FormDiagram().ShowDialog();
         }
 
-        // Кнопка статистики
+        // кнопка статистики
         private void buttonStat_VAN_Click(object sender, EventArgs e)
         {
             new FormStatistics().ShowDialog();
         }
 
-        // Кнопка помощи
+        // кнопка помощи
         private void buttonHelp_VAN_Click(object sender, EventArgs e)
         {
             new FormAbout().ShowDialog();
         }
 
-        // Кнопка очистки таблицы
+        // кнопка очистки таблицы
         private void buttonClear_Click(object sender, EventArgs e)
         {
-            // Убедимся, что колонки созданы
-            if (dataGridViewMatrix_VAN.Columns.Count == 0)
-            {
-                CreateDataGridViewColumns();
-            }
+            dataGridViewMatrix_VAN.Rows.Clear();
+            MessageBox.Show("Таблица очищена");
         }
-
     }
 }

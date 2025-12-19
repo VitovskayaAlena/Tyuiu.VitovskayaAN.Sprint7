@@ -43,6 +43,7 @@
             dataGridViewMatrix_VAN = new DataGridView();
             panelRight_VAN = new Panel();
             groupBoxAdd_VAN = new GroupBox();
+            buttonClear_VAN = new Button();
             buttonSave_VAN = new Button();
             buttonLoad_VAN = new Button();
             textBoxFam_VAN = new TextBox();
@@ -210,6 +211,7 @@
             // groupBoxAdd_VAN
             // 
             groupBoxAdd_VAN.BackColor = Color.Linen;
+            groupBoxAdd_VAN.Controls.Add(buttonClear_VAN);
             groupBoxAdd_VAN.Controls.Add(buttonSave_VAN);
             groupBoxAdd_VAN.Controls.Add(buttonLoad_VAN);
             groupBoxAdd_VAN.Controls.Add(textBoxFam_VAN);
@@ -233,15 +235,27 @@
             groupBoxAdd_VAN.TabStop = false;
             groupBoxAdd_VAN.Text = "Добавить нового пользователя:";
             // 
+            // buttonClear_VAN
+            // 
+            buttonClear_VAN.BackColor = Color.PeachPuff;
+            buttonClear_VAN.Location = new Point(269, 542);
+            buttonClear_VAN.Name = "buttonClear_VAN";
+            buttonClear_VAN.Size = new Size(204, 105);
+            buttonClear_VAN.TabIndex = 19;
+            buttonClear_VAN.Text = "Очистить таблицу";
+            toolTip_VAN.SetToolTip(buttonClear_VAN, "Очищает данные в таблице");
+            buttonClear_VAN.UseVisualStyleBackColor = false;
+            buttonClear_VAN.Click += buttonClear_Click;
+            // 
             // buttonSave_VAN
             // 
             buttonSave_VAN.Anchor = AnchorStyles.Bottom;
             buttonSave_VAN.BackColor = Color.PeachPuff;
-            buttonSave_VAN.Location = new Point(406, 542);
+            buttonSave_VAN.Location = new Point(499, 542);
             buttonSave_VAN.Name = "buttonSave_VAN";
             buttonSave_VAN.Size = new Size(204, 105);
             buttonSave_VAN.TabIndex = 18;
-            buttonSave_VAN.Text = "Сохранить файл";
+            buttonSave_VAN.Text = "Сохранить";
             toolTip_VAN.SetToolTip(buttonSave_VAN, "Сохранить данные из таблицы в файл");
             buttonSave_VAN.UseVisualStyleBackColor = false;
             buttonSave_VAN.Click += buttonSave_Click;
@@ -250,7 +264,7 @@
             // 
             buttonLoad_VAN.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             buttonLoad_VAN.BackColor = Color.PeachPuff;
-            buttonLoad_VAN.Location = new Point(105, 542);
+            buttonLoad_VAN.Location = new Point(36, 542);
             buttonLoad_VAN.Name = "buttonLoad_VAN";
             buttonLoad_VAN.Size = new Size(204, 105);
             buttonLoad_VAN.TabIndex = 15;
@@ -431,5 +445,6 @@
         private TextBox textBoxFam_VAN;
         private Label labelFam_VAN;
         private Button buttonSave_VAN;
+        private Button buttonClear_VAN;
     }
 }

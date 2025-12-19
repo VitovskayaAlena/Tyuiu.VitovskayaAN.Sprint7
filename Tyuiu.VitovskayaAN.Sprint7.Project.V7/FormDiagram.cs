@@ -7,22 +7,22 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
         public FormDiagram()
         {
             InitializeComponent();
-            LoadData(); // Загружаем данные сразу
+            LoadData(); // загружаем данные сразу
         }
 
-        // Загрузка данных из файла
+        // загрузка данных из файла
         private void LoadData()
         {
             string filePath = @"C:\DataSprint7\InPutFileProjectV7.csv";
 
-            // Читаем все строки
+            // читаем все строки
             string[] lines = File.ReadAllLines(filePath);
 
-            // Очищаем таблицу
+            // очищаем таблицу
             dataGridViewMatrix_VAN.Columns.Clear();
             dataGridViewMatrix_VAN.Rows.Clear();
 
-            // Создаем 6 колонок (как в файле)
+            // создаем 6 колонок (как в файле)
             dataGridViewMatrix_VAN.ColumnCount = 6;
             dataGridViewMatrix_VAN.Columns[0].HeaderText = "Подъезд";
             dataGridViewMatrix_VAN.Columns[1].HeaderText = "Квартира";
@@ -31,7 +31,7 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
             dataGridViewMatrix_VAN.Columns[4].HeaderText = "Члены семьи";
             dataGridViewMatrix_VAN.Columns[5].HeaderText = "Дети";
 
-            // Заполняем таблицу
+            // заполняем таблицу
             foreach (string line in lines)
             {
                 string[] parts = line.Split(';');
@@ -42,7 +42,7 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
 
             int totalWidth = dataGridViewMatrix_VAN.ClientSize.Width;
 
-            // Процентное соотношение
+            // процентное соотношение
             dataGridViewMatrix_VAN.Columns[0].Width = (int)(totalWidth * 0.15); // 15%
             dataGridViewMatrix_VAN.Columns[1].Width = (int)(totalWidth * 0.15); // 15%
             dataGridViewMatrix_VAN.Columns[2].Width = (int)(totalWidth * 0.15); // 15%
@@ -53,25 +53,25 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
 
         }
 
-        // Диаграмма "Комнаты"
+        // диаграмма "Комнаты"
         private void buttonCountK_VAN_Click(object sender, EventArgs e)
         {
             BuildDiagram(2, "Комнаты");
         }
 
-        // Диаграмма "Члены семьи"
+        // диаграмма "Члены семьи"
         private void buttonCountCh_VAN_Click(object sender, EventArgs e)
         {
             BuildDiagram(4, "Члены семьи");
         }
 
-        // Диаграмма "Дети"
+        // диаграмма "Дети"
         private void buttonCountD_VAN_Click(object sender, EventArgs e)
         {
             BuildDiagram(5, "Дети");
         }
 
-        // Строим диаграмму
+        // строим диаграмму
         private void BuildDiagram(int columnIndex, string title)
         {
             chartDiag_VAN.Series.Clear();
@@ -81,25 +81,32 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
             series.IsValueShownAsLabel = true;
 
             // Заголовок диаграммы
-            this.Text = title; // Или chartDiag_VAN.Titles.Add(title);
+            this.Text = title;
 
-            var counts = new System.Collections.Generic.Dictionary<int, int>();
+            // создаем словарь для подсчета: значение, сколько раз встречается
+            var counts = new Dictionary<int, int>();
 
             for (int i = 0; i < dataGridViewMatrix_VAN.Rows.Count - 1; i++)
             {
-                string valueStr = dataGridViewMatrix_VAN.Rows[i].Cells[columnIndex].Value.ToString();
+                // берем значение из нужной колонки текущей строки
+                // ? если Value = null, вернет null
+                // ?? если слева null, вернет "0"
+                string valueStr = dataGridViewMatrix_VAN.Rows[i].Cells[columnIndex].Value?.ToString() ?? "0";
 
+                // пробуем преобразовать строку в число
                 if (int.TryParse(valueStr, out int value))
                 {
+                    // если такое значение уже есть в словаре увеличиваем счетчик
                     if (counts.ContainsKey(value))
-                        counts[value]++;
+                        counts[value]++; // уже было такое значение +1
                     else
-                        counts[value] = 1;
+                        counts[value] = 1; // новое значение начинаем с 1
                 }
             }
 
             foreach (var item in counts)
             {
+                // (значение, сколько раз встречается)
                 series.Points.AddXY(item.Key.ToString(), item.Value);
             }
         }

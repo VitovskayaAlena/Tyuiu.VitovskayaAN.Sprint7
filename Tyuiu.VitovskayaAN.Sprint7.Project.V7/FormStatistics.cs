@@ -1,35 +1,34 @@
-﻿using System;
-using System.ComponentModel;
-using System.IO;
-using System.Windows.Forms;
+﻿using System.ComponentModel;
 using Tyuiu.VitovskayaAN.Sprint7.Project.V7.Lib;
 
 namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
 {
     public partial class FormStatistics : Form
     {
-        public FormStatistics()
+        private string filePath;
+        public FormStatistics(string path = @"C:\DataSprint7\InPutFileProjectV7.csv")
         {
             InitializeComponent();
+            filePath = path; 
         }
 
         private void FormStatistics_Load(object sender, EventArgs e)
         {
             try
             {
-                string FilePath = @"C:\DataSprint7\InPutFileProjectV7.csv";
-                DataService ds = new DataService(); // Создаем объект библиотеки
+                string FilePath = filePath ?? @"C:\DataSprint7\InPutFileProjectV7.csv";
+                DataService ds = new DataService();
 
-                // Загружаем данные в таблицу 
+                // загружаем данные в таблицу 
                 string[,] arrayValues = LoadFromFileData(FilePath);
                 int rows = arrayValues.GetLength(0);
                 int columns = arrayValues.GetLength(1);
 
-                // Очищаем таблицу
+                // очищаем таблицу
                 dataGridViewMatrix_VAN.Columns.Clear();
                 dataGridViewMatrix_VAN.Rows.Clear();
 
-                // Создаем 6 колонок
+                // создаем 6 колонок
                 dataGridViewMatrix_VAN.ColumnCount = 6;
                 dataGridViewMatrix_VAN.Columns[0].HeaderText = "Номер подъезда";
                 dataGridViewMatrix_VAN.Columns[0].Width = 75;
@@ -44,20 +43,20 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
                 dataGridViewMatrix_VAN.Columns[5].HeaderText = "Количество детей в семье";
                 dataGridViewMatrix_VAN.Columns[5].Width = 100;
 
-                // Заполняем таблицу
+                // заполняем таблицу
                 for (int r = 0; r < rows; r++)
                 {
-                    int rowIndex = dataGridViewMatrix_VAN.Rows.Add();
-                    for (int c = 0; c < 6; c++)
+                    int rowIndex = dataGridViewMatrix_VAN.Rows.Add(); // добавляем новую строку
+                    for (int c = 0; c < 6; c++) 
                     {
-                        if (c < columns)
+                        if (c < columns) // проверяем что данные есть
                         {
                             dataGridViewMatrix_VAN.Rows[rowIndex].Cells[c].Value = arrayValues[r, c];
                         }
                     }
                 }
 
-                // ВЫЧИСЛЕНИЯ ЧЕРЕЗ БИБЛИОТЕКУ
+                // вычисление через библиотеку
                 textBoxCountK_VAN.Text = ds.CountApartments(FilePath).ToString();
                 textBoxCountCh_VAN.Text = ds.SumFamilyMembers(FilePath).ToString();
                 textBoxCountD_VAN.Text = ds.SumChildren(FilePath).ToString();
@@ -71,15 +70,9 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
             }
         }
 
-        // Метод загрузки данных из файла
+        // метод загрузки данных из файла
         public static string[,] LoadFromFileData(string filePath)
         {
-            if (!File.Exists(filePath))
-            {
-                MessageBox.Show($"Файл не найден: {filePath}");
-                return new string[0, 0];
-            }
-
             string[] lines = File.ReadAllLines(filePath);
             int rows = lines.Length;
 
@@ -103,14 +96,14 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
         {
             for (int i = 0; i < dataGridViewMatrix_VAN.Rows.Count - 1; i++)
             {
-                dataGridViewMatrix_VAN.Rows[i].Selected = false;
+                dataGridViewMatrix_VAN.Rows[i].Selected = false; // снимаем выделение
                 for (int j = 0; j < dataGridViewMatrix_VAN.Columns.Count; j++)
                 {
                     if (dataGridViewMatrix_VAN.Rows[i].Cells[j].Value != null)
                     {
                         if (dataGridViewMatrix_VAN.Rows[i].Cells[j].Value.ToString().Contains(textBoxPoisk_VAN.Text))
                         {
-                            dataGridViewMatrix_VAN.Rows[i].Selected = true;
+                            dataGridViewMatrix_VAN.Rows[i].Selected = true; // выделяем строку
                             break;
                         }
                     }
@@ -122,14 +115,14 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
         {
             for (int i = 0; i < dataGridViewMatrix_VAN.Rows.Count - 1; i++)
             {
-                dataGridViewMatrix_VAN.Rows[i].Visible = false;
+                dataGridViewMatrix_VAN.Rows[i].Visible = false; // скрываем строку
                 for (int j = 0; j < dataGridViewMatrix_VAN.Columns.Count; j++)
                 {
                     if (dataGridViewMatrix_VAN.Rows[i].Cells[j].Value != null)
                     {
                         if (dataGridViewMatrix_VAN.Rows[i].Cells[j].Value.ToString().Contains(textBoxFiltr_VAN.Text))
                         {
-                            dataGridViewMatrix_VAN.Rows[i].Visible = true;
+                            dataGridViewMatrix_VAN.Rows[i].Visible = true; // показываем строку
                             break;
                         }
                     }
@@ -141,7 +134,7 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
         {
             for (int i = 0; i < dataGridViewMatrix_VAN.Rows.Count - 1; i++)
             {
-                dataGridViewMatrix_VAN.Rows[i].Visible = true;
+                dataGridViewMatrix_VAN.Rows[i].Visible = true; // показываем все строки
             }
         }
 
