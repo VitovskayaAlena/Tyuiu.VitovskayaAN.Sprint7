@@ -16,7 +16,7 @@ namespace Tyuiu.VitovskayaAN.Sprint7.Project.V7
         {
             try
             {
-                string FilePath = filePath ?? @"C:\DataSprint7\InPutFileProjectV7.csv";
+                string FilePath = filePath;
                 DataService ds = new DataService();
 
                 // загружаем данные в таблицу 
